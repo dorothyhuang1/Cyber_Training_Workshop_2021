@@ -1,0 +1,88 @@
+&GLOBAL
+  PROJECT      HBQ
+  RUN_TYPE     ENERGY
+  PRINT_LEVEL  LOW
+&END GLOBAL
+
+&FORCE_EVAL
+  METHOD         Quickstep
+    &PROPERTIES
+    &TDDFPT
+      NSTATES    1
+      MAX_ITER   10
+      CONVERGENCE [eV] 1.0e-3
+    &END TDDFPT
+  &END PROPERTIES
+  &DFT
+    BASIS_SET_FILE_NAME    ../BASIS
+    POTENTIAL_FILE_NAME    ../POTENTIALS
+!section to ensure stable and correct simulations
+    CHARGE      -1
+    LSD
+    &MGRID
+      CUTOFF    400
+    &END MGRID
+    &QS
+      METHOD GPW
+      EPS_DEFAULT  1.0E-8
+      EPS_PGF_ORB  1.0E-8
+    &END QS
+    &SCF
+      SCF_GUESS ATOMIC
+      EPS_SCF 1.0E-6
+      MAX_SCF 100
+      &OT
+        MINIMIZER       CG
+        PRECONDITIONER  FULL_SINGLE_INVERSE
+      &END
+      &OUTER_SCF
+        EPS_SCF 1.0E-6
+        MAX_SCF 10
+      &END
+    &END SCF
+    
+    &POISSON            ! Non periodic calculation needs Poisson solver
+      PERIODIC NONE
+      PSOLVER  WAVELET
+    &END POISSON
+
+    &XC
+      &XC_FUNCTIONAL
+        &PBE TRUE
+        &END PBE                       
+      &END XC_FUNCTIONAL
+    &END XC
+  &END DFT
+  
+  &SUBSYS
+    &CELL
+      ABC [angstrom]  15 15 15
+      PERIODIC NONE           ! Non periodic calculation.
+    &END CELL
+    &COORD 
+      @INCLUDE 'HBQ.coord'                    
+    &END
+    &TOPOLOGY
+      &CENTER_COORDINATES       ! keep atoms away from box borders, would confuse Poisson solver
+      &END
+    &END TOPOLOGY
+ 
+!specification of external basis sets and potentials. The name of the files is given above.   
+    &KIND H
+      BASIS_SET         cc-TZ 
+      POTENTIAL         GTH-PBE-q1      
+    &END KIND
+    &KIND C
+      BASIS_SET         cc-TZ 
+      POTENTIAL         GTH-PBE-q4
+    &END KIND
+    &KIND N
+      BASIS_SET         cc-TZ 
+      POTENTIAL         GTH-PBE-q5
+    &END KIND
+    &KIND O
+      BASIS_SET         cc-TZ
+      POTENTIAL         GTH-PBE-q6
+    &END
+  &END SUBSYS
+&END FORCE_EVAL
