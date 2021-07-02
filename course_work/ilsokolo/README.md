@@ -21,3 +21,4 @@ There are 5 folders containing the next files:
         BASIS - file with cc-TZ basis functions for H, C, O and N
         POTENTIALS - PBE potentials for the same elements
 	Strong_coupling.ipynb - Jupyter Notebook file for creaction the energy profiles along the reaction coordinate under strong coupling
+	energy_ground_exc.txt - energy profiles (ground, excited)
