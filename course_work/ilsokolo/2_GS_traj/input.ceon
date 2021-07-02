@@ -1,0 +1,152 @@
+&qmmm
+   !***** Geometry Optimization
+   maxcyc=0, ! Number of cycles for geometry optimization [0]
+   ntpr=1, ! Print results every ntpr cycles [1]
+   grms_tol=1.0d-2, ! Tolerance in eV/A (derivatives) [1.0d-2]
+
+   !***** Ground-State and Output Parameters
+   qm_theory='AM1', ! Integral type, check Amber's SQM for more options [AM1]
+   scfconv=1.0d-8, ! Ground-state SCF convergence criteria, eV [1.0d-6]
+   verbosity=1, ! QM/MM output verbosity (0-minimum, 5-maximum)
+   ! [1 for dynamics and optimization, 5 for others]
+   printdipole=1, ! (0) No dipole data, (1) Unrelaxed transitions plus 
+   ! ground state total molecular, or (2) Unrelaxed/relaxed transitions plus 
+   ! total molecular WARNING: option 2 is expensive [1 for dynamics, 2 for optimization and single-point]
+   printcharges=0, ! Print (1) or do not print (0) Mulliken charges of QM atoms [0]
+   ! charges for excited states will be printed if printdipole=2
+   itrmax=300, ! Max SCF iterations for ground state 
+   ! (negative to ignore convergence) [300]
+
+   !***** Excited-State Parameters
+   exst_method=1, ! CIS (1) or RPA (2) [1]
+   dav_guess=1, ! Restart Davidson from (0) Scratch, (1) Previous, 
+   ! or (2) XL-BOMD [1] *** (2) IS UNDER DEVELOPMENT, DO NOT USE ***
+   ftol0=1.0d-7, ! Acceptance tolerance (|emin-eold|) [1.0d-5]
+   dav_maxcyc=200, ! Max cycles for Davidson diagonalization 
+   ! (negative to ignore convergence) [100]
+   calcxdens=.false., ! Print (.true.) or do not print (.false.) 
+   ! excited-to-excited transition dipole moments [.false.]
+
+   !***** Solvent Models and External Electric Fields
+   solvent_model=0, ! (0) None, (1) Linear response, (2) Vertical excitation, 
+   ! or (3) State-specific  [0]
+   potential_type=1, ! (1) COSMO or (2) Onsager [1]
+   onsager_radius=2, ! Onsager radius, A (system dependent) [2]
+   ceps=10, ! Dielectric constant, unitless [10]
+   linmixparam=1, ! Linear mixing parameter for vertical excitation
+   ! or state-specific SCF calculation [1]
+   cosmo_scf_ftol=1.0d-5, ! Vertical excitation or state-specific
+   ! SCF tolerance, eV [1.0d-5]
+   doZ=.false., ! Use relaxed (.true.) or unrelaxed (.false) density for 
+   ! vertical excitation or state-specific COSMO or Onsager [.false.]
+   EF=0, ! (0) None or (1) Electric field in ground- and excited-state [0]
+   Ex=0, ! Electric field vector X, eV/A [0]
+   Ey=0, ! Electric field vector Y, eV/A [0]
+   Ez=0, ! Electric field vector Z, eV/A [0] 
+&endqmmm
+
+&moldyn
+   !***** General Parameters
+   natoms=24, ! Number of atoms 
+   ! (must be equal to number of atoms in system)
+   rnd_seed=19345, ! Seed for the random number generator
+   bo_dynamics_flag=1, ! (0) Non-BO or (1) BO [1]
+   exc_state_init=0, ! Initial excited state (0 - ground state) [0]
+   n_exc_states_propagate=0, ! Number of excited states [0]
+
+   !***** Dynamics Parameters
+   time_init=0.0, ! Initial time, fs [0.0]
+   time_step=0.1, ! Time step, fs [0.1]
+   n_class_steps=50000, ! Number of classical steps [1]
+   n_quant_steps=4, ! Number of quantum steps for each classical step [4]
+   moldyn_deriv_flag=1, ! (0) None, (1) Analytical, or (2) Numerical [1]
+   num_deriv_step=1.0d-3, ! Displacement for numerical derivatives, A [1.0d-3]
+   rk_tolerance=1.0d-7, ! Tolerance for the Runge-Kutta propagator [1.0d-6]
+
+   !***** Non-Adiabatic Parameters
+   decoher_type=2, ! Type of decoherence: Reinitialize (0) Never, 
+   ! (1) At successful hops, (2) At successful plus frustrated hops... 
+   dotrivial=1, ! Do unavoided (trivial) crossing routine (1) or not (0) [1]
+   quant_step_reduction_factor=2.5d-2, ! Quantum step reduction factor [2.5d-2]
+
+   !***** Thermostat Parameters
+   therm_type=1, ! Thermostat type: (0) Newtonian, (1) Langevin, 
+   therm_temperature=300, ! Thermostat temperature, K [300]
+   therm_friction=20, ! Thermostat friction coefficient, 1/ps [20]
+
+
+   !***** Output & Log Parameters
+   verbosity=2, ! NEXMD output verbosity (0-minimum, 3-maximum)
+   ! [2 for dynamics, 3 for optimization and single-point]
+   out_data_steps=1, ! Number of steps to write data [1]
+   out_coords_steps=10, ! Number of steps to write the restart file [10]
+   out_data_cube=0, ! Write (1) or do not write (0) view files to generate cubes [0]
+   out_count_init=0, ! Initial count for view files [0]
+&endmoldyn
+
+&coord
+  8         9.1895752455        6.3706082111        9.1796817975
+  1         8.3890653563        6.8900100466        9.5451630364
+  6         9.0589552624        6.4151476041        7.8387852187
+  6        10.0308426590        5.7948008764        7.0473762401
+  1        10.8690488946        5.3122807812        7.5498223071
+  6         9.9237636929        5.7929934995        5.6533187375
+  1        10.6937136942        5.2946638994        5.0624437653
+  6         8.8583333491        6.4160177030        5.0167217337
+  1         8.7746876754        6.4073137940        3.9294689584
+  6         7.8719558984        7.0739196654        5.7782042097
+  6         7.9585150838        7.0798206583        7.2068551689
+  6         6.7785409263        7.7509637639        5.1420864725
+  1         6.7349722109        7.7343541086        4.0511356257
+  6         5.8187354290        8.4053718720        5.8574898135
+  1         5.0007371535        8.9226479207        5.3524432885
+  6         5.8664716252        8.4283704531        7.2877546033
+  6         4.8974370249        9.0790445753        8.0752458985
+  1         4.0699529415        9.5946957976        7.5836901452
+  6         4.9988429568        9.0589848797        9.4575042930
+  1         4.2605325495        9.5520526958       10.0885391523
+  6         6.0811450849        8.3837836301       10.0393476251
+  1         6.1975551962        8.3451138571       11.1242273374
+  7         7.0201494603        7.7560048433        9.3262636219
+  6         6.9375728775        7.7617391167        7.9619314018
+&endcoord
+
+!!! initial velocities were randomly generated accoring to a Maxwell distribution at T=300 K with Gromacs software
+&veloc
+  -0.0497  -0.2561  -0.2509
+   0.0703   1.9899   0.6541
+   0.3354  -0.0383   0.1114
+   0.3088   0.4218  -0.1829
+   1.5489  -0.6946  -1.5026
+  -0.4808  -0.0589   0.1051
+   2.1111  -0.4523  -0.7778
+   0.1702   0.2782   0.0522
+   0.51    -0.1986   0.915
+   0.1274   0.5408   0.252
+   0.2235  -0.0172  -0.0923
+  -0.4644   0.1287  -0.3173
+  -1.4668   0.2861   3.0122
+  -0.3486  -0.982    0.1263
+  -0.224   -0.7504  -0.3813
+  -0.4638  -0.5008  -0.403
+  -0.096    0.1111   0.3245
+  -0.8679  -1.4293   0.8087
+  -0.5594  -0.2001   0.2601
+  -0.3692  -1.2241  -1.0618
+  -0.1956   0.1657   0.1502
+   0.2523  -0.2436   2.4909
+   0.1708  -0.029    0.1639
+  -0.3321  -0.6093  -0.0848
+&endveloc
+
+&coeff
+  0.00  0.00
+  0.00  0.00
+  0.00  0.00
+  0.00  0.00
+  0.00  0.00
+  1.00  0.00
+  0.00  0.00
+  0.00  0.00
+&endcoeff
+
